@@ -78,18 +78,3 @@ VOLUME /app/models
 
 # default start command
 CMD python -u main.py --listen 0.0.0.0
-
-### Build:
-# $ docker build . --tag comfy
-#
-
-### To run:
-# $ docker run --gpus=all -p 8188:8188 -v /MODELS/models:/app/models --name comfy comfy
-#
-# (CTRL-C to exit)
-#
-
-### Restart, after initial run:
-# $ docker start -ia comfy
-#
-# (CTRL-C to exit)
