@@ -1,15 +1,8 @@
-### Build:
-
-```sh
-docker build . --tag comfy
-```
-
 ### To run:
 (CTRL-C to exit)
 ```sh
-docker run --gpus=all -p 8188:8188 -v /MODELS/models:/app/models --name comfy comfy
+docker run --gpus=all -p 8188:8188 -v /MODELS/models:/app/models --name comfyui ghcr.io/gsfjohnson/comfyui-docker:main
 ```
-
 
 ### Restart, after initial run:
 (CTRL-C to exit)
@@ -17,3 +10,9 @@ docker run --gpus=all -p 8188:8188 -v /MODELS/models:/app/models --name comfy co
 docker start -ia comfy
 ```
 
+### Build and run locally:
+
+```sh
+docker build . --tag comfyui
+docker run --gpus=all -p 8188:8188 -v /MODELS/models:/app/models --name comfyui comfyui
+```
