@@ -3,8 +3,6 @@
 #FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
 FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
 
-#SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
-
 # Install needed packages
 RUN --mount=target=/var/lib/apt/lists,type=cache \
     --mount=target=/var/cache/apt,type=cache \
@@ -57,4 +55,5 @@ VOLUME /app/models
 #VOLUME /opt/conda/lib/python3.10/site-packages
 
 # default start command
+SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
 CMD python -u main.py --listen 0.0.0.0
