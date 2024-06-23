@@ -17,12 +17,13 @@ ENV TRANSFORMERS_CACHE=/cache/huggingface/hub
 # create cache directory. During build we will use a cache mount,
 # but later this is useful for custom node installs
 #RUN --mount=type=cache,target=/cache/,uid=${USER_UID},gid=${USER_GID} \
-RUN	mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE}
+#RUN	mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE}
 
 WORKDIR /app
 
 # Install ComfyUI and custom nodes !
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app \
+  && mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE} \
   && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
   && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
   && git clone --recursive https://github.com/ssitu/ComfyUI_UltimateSDUpscale /app/custom_nodes/ComfyUI_UltimateSDUpscale \
