@@ -24,10 +24,10 @@ WORKDIR /app
 # Install ComfyUI and custom nodes !
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app \
   && mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE} \
+  && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
   && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
   && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
   && git clone --recursive https://github.com/ssitu/ComfyUI_UltimateSDUpscale /app/custom_nodes/ComfyUI_UltimateSDUpscale \
-  && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
   && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git /app/custom_nodes/ComfyUI_Comfyroll_CustomNodes \
   && git clone https://github.com/Jordach/comfy-plasma.git /app/custom_nodes/comfy-plasma \
   && git clone https://github.com/JPS-GER/ComfyUI_JPS-Nodes.git /app/custom_nodes/ComfyUI_JPS-Nodes \
@@ -51,10 +51,13 @@ RUN --mount=target=/cache/pip,type=cache \
 #  && cd /app/custom_nodes/ComfyUI-Upscaler-Tensorrt \
 #  && pip install -r requirements.txt
 
+COPY --chmod=755 comfyui.sh .
+
 #VOLUME /app/custom_nodes
 VOLUME /app/models
 #VOLUME /opt/conda/lib/python3.10/site-packages
 
 # default start command
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
-CMD python -u main.py --listen 0.0.0.0
+CMD comfyui.sh
+# python -u main.py --listen 0.0.0.0
