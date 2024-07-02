@@ -59,5 +59,6 @@ VOLUME /app/models
 
 # default start command
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
-CMD comfyui.sh
-# python -u main.py --listen 0.0.0.0
+CMD python -u main.py --listen 0.0.0.0
+#CMD /bin/bash /app/comfyui.sh
+
