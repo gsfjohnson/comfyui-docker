@@ -3,10 +3,13 @@
 [ -z $(which nginx) ] && /usr/local/bin/nginx_install.sh
 [ ! -r /etc/ssl/certs/localhost.pem ] && /usr/local/bin/nginx_setup.sh
 
+nginx
+
 # test for A100
-A100=$(nvidia-smi | grep A100)
+SMI=$(nvidia-smi | grep A100)
 EXTRA_OPTS=""
-[ ! -z $A100 ] && EXTRA_OPTS="--disable-cuda-malloc"
+[ ! -z "${SMI}" ] && EXTRA_OPTS="--disable-cuda-malloc"
+[ ! -z "${EXTRA_OPTS}" ] && echo "Adding extra opts: ${EXTRA_OPTS}"
 
 # exec app
 cd /app

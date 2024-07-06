@@ -9,8 +9,6 @@ RUN --mount=target=/var/lib/apt/lists,type=cache \
     apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx
 
-#    systemctl enable nginx
-
 ENV XDG_CACHE_HOME=/cache
 ENV PIP_CACHE_DIR=/cache/pip
 ENV HF_HOME=/cache/huggingface
