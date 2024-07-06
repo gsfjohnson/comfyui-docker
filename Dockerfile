@@ -38,7 +38,9 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app \
   && git clone https://github.com/teward/ComfyUI-Helper-Nodes.git /app/custom_nodes/ComfyUI-Helper-Nodes \
   && git clone https://github.com/Fannovel16/comfyui_controlnet_aux /app/custom_nodes/comfyui_controlnet_aux \
   && git clone https://github.com/kijai/ComfyUI-SUPIR.git /app/custom_nodes/ComfyUI-SUPIR \
-  && git clone https://github.com/kijai/ComfyUI-KJNodes.git /app/custom_nodes/ComfyUI-KJNodes
+  && git clone https://github.com/kijai/ComfyUI-KJNodes.git /app/custom_nodes/ComfyUI-KJNodes \
+  && git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack /app/custom_nodes/ComfyUI-Impact-Pack \
+  && git clone https://github.com/jags111/efficiency-nodes-comfyui /app/custom_nodes/efficiency-nodes-comfyui
 
 RUN --mount=target=/cache/pip,type=cache \
   pip install -r /app/requirements.txt \
@@ -47,7 +49,9 @@ RUN --mount=target=/cache/pip,type=cache \
   && pip install -r /app/custom_nodes/ComfyUI-Helper-Nodes/requirements.txt \
   && pip install -r /app/custom_nodes/comfyui_controlnet_aux/requirements.txt \
   && pip install -r /app/custom_nodes/ComfyUI-SUPIR/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyUI-KJNodes/requirements.txt
+  && pip install -r /app/custom_nodes/ComfyUI-KJNodes/requirements.txt \
+  && pip install -r /app/custom_nodes/ComfyUI-Impact-Pack/requirements.txt \
+  && pip install -r /app/custom_nodes/efficiency-nodes-comfyui/requirements.txt
 
 #RUN git clone https://github.com/yuvraj108c/ComfyUI-Upscaler-Tensorrt /app/custom_nodes/ComfyUI-Upscaler-Tensorrt \
 #  && cd /app/custom_nodes/ComfyUI-Upscaler-Tensorrt \
