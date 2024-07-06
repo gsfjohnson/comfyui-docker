@@ -7,7 +7,8 @@ FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
 RUN --mount=target=/var/lib/apt/lists,type=cache \
     --mount=target=/var/cache/apt,type=cache \
     apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0
+    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx && \
+    systemctl enable nginx
 
 ENV XDG_CACHE_HOME=/cache
 ENV PIP_CACHE_DIR=/cache/pip
@@ -51,7 +52,9 @@ RUN --mount=target=/cache/pip,type=cache \
 #  && cd /app/custom_nodes/ComfyUI-Upscaler-Tensorrt \
 #  && pip install -r requirements.txt
 
+COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
 COPY --chmod=755 comfyui.sh .
+COPY --chmod=755 nginx_*.sh /usr/local/bin/
 
 #VOLUME /app/custom_nodes
 VOLUME /app/models
@@ -59,6 +62,6 @@ VOLUME /app/models
 
 # default start command
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
-CMD python -u main.py --listen 0.0.0.0
-#CMD /bin/bash /app/comfyui.sh
+#CMD python -u main.py --listen 0.0.0.0
+CMD /app/comfyui.sh
 
