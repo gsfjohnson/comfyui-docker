@@ -6,6 +6,13 @@
 docker run --gpus=all -p 8188:8188 -v /MODELS/models:/app/models --name comfyui ghcr.io/gsfjohnson/comfyui-docker:cuda
 ```
 
+### Or run with SSL and password:
+UN: comfyui / PW: comfyui
+(CTRL-C to exit)
+```sh
+docker run --gpus=all -p 443:443 -v /MODELS/models:/app/models --name comfyui ghcr.io/gsfjohnson/comfyui-docker:cuda
+```
+
 ### Restart, after initial run:
 (CTRL-C to exit)
 ```sh

@@ -55,6 +55,8 @@ COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
 COPY --chmod=755 comfyui.sh .
 COPY --chmod=755 nginx_*.sh /usr/local/bin/
 
+RUN apt install apache2-utils && rm /etc/nginx/sites-enabled/default
+
 #VOLUME /app/custom_nodes
 VOLUME /app/models
 #VOLUME /opt/conda/lib/python3.10/site-packages
