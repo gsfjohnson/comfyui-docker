@@ -7,8 +7,9 @@ FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
 RUN --mount=target=/var/lib/apt/lists,type=cache \
     --mount=target=/var/cache/apt,type=cache \
     apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx && \
-    systemctl enable nginx
+    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx
+
+#    systemctl enable nginx
 
 ENV XDG_CACHE_HOME=/cache
 ENV PIP_CACHE_DIR=/cache/pip
