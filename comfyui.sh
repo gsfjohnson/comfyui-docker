@@ -1,8 +1,9 @@
 #!/bin/sh
 
+# start nginx
 [ -z $(which nginx) ] && /usr/local/bin/nginx_install.sh
 [ ! -r /etc/ssl/certs/localhost.pem ] && /usr/local/bin/nginx_setup.sh
-
+[ ! -r /app/models/.htpasswd ] && htpasswd -c -b -p /app/models/.htpasswd comfyui comfyui
 nginx
 
 # test for A100

@@ -7,7 +7,9 @@ FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
 RUN --mount=target=/var/lib/apt/lists,type=cache \
     --mount=target=/var/cache/apt,type=cache \
     apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx
+    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync \
+      fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx apache2-utils && \
+    rm /etc/nginx/sites-enabled/default
 
 ENV XDG_CACHE_HOME=/cache
 ENV PIP_CACHE_DIR=/cache/pip
@@ -54,9 +56,6 @@ RUN --mount=target=/cache/pip,type=cache \
 COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
 COPY --chmod=755 comfyui.sh .
 COPY --chmod=755 nginx_*.sh /usr/local/bin/
-
-#RUN apt install apache2-utils
-RUN rm /etc/nginx/sites-enabled/default
 
 #VOLUME /app/custom_nodes
 VOLUME /app/models
