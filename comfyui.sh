@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -eux -o pipefail
 
 # start nginx
 [ -z $(which nginx) ] && /usr/local/bin/nginx_install.sh
@@ -13,5 +13,7 @@ EXTRA_OPTS=""
 [ ! -z "${EXTRA_OPTS}" ] && echo "Adding extra opts: ${EXTRA_OPTS}"
 
 # exec app
+export COMFYUI_PATH=/app
+export COMFYUI_MODEL_PATH=/app/models
 cd /app
 python3 -u main.py --listen 0.0.0.0 ${EXTRA_OPTS}
