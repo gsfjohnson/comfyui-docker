@@ -58,7 +58,7 @@ RUN --mount=target=/cache/pip,type=cache \
 #  && pip install -r requirements.txt
 
 COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
-COPY --chmod=755 comfyui.sh .
+COPY --chmod=755  comfyui.sh .
 COPY --chmod=755 nginx_*.sh /usr/local/bin/
 
 #VOLUME /app/custom_nodes

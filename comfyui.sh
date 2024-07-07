@@ -1,4 +1,5 @@
-#!/bin/bash -eux -o pipefail
+#!/bin/bash
+# -eux -o pipefail
 
 # start nginx
 [ -z $(which nginx) ] && /usr/local/bin/nginx_install.sh
