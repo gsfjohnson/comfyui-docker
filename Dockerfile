@@ -1,20 +1,20 @@
 
-#FROM python:3.11-slim
+FROM python:3.11-slim
 #FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
-FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
+#FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
 
 # Install needed packages
-RUN --mount=target=/var/lib/apt/lists,type=cache \
-    --mount=target=/var/cache/apt,type=cache \
-    apt update && \
-    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync \
-      fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 nginx apache2-utils && \
-    rm /etc/nginx/sites-enabled/default
+#RUN --mount=target=/var/lib/apt/lists,type=cache \
+#    --mount=target=/var/cache/apt,type=cache \
+#    apt update && \
+#    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0
 
 ENV XDG_CACHE_HOME=/cache
 ENV PIP_CACHE_DIR=/cache/pip
 ENV HF_HOME=/cache/huggingface
 ENV TRANSFORMERS_CACHE=/cache/huggingface/hub
+ENV COMFYUI_PATH=/app
+ENV COMFYUI_MODEL_PATH=/app/models
 
 # create cache directory. During build we will use a cache mount,
 # but later this is useful for custom node installs
@@ -23,9 +23,15 @@ ENV TRANSFORMERS_CACHE=/cache/huggingface/hub
 
 WORKDIR /app
 
-# Install ComfyUI and custom nodes !
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app \
-  && mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE} \
+# Install needed packages
+RUN --mount=target=/var/lib/apt/lists,type=cache \
+ --mount=target=/var/cache/apt,type=cache \
+ apt update \
+ && DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+  git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 \
+  nginx apache2-utils \
+ && rm /etc/nginx/sites-enabled/default \
+ && git clone https://github.com/comfyanonymous/ComfyUI.git /app \
   && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
   && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
   && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
@@ -40,33 +46,15 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app \
   && git clone https://github.com/kijai/ComfyUI-SUPIR.git /app/custom_nodes/ComfyUI-SUPIR \
   && git clone https://github.com/kijai/ComfyUI-KJNodes.git /app/custom_nodes/ComfyUI-KJNodes \
   && git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack /app/custom_nodes/ComfyUI-Impact-Pack \
-  && git clone https://github.com/jags111/efficiency-nodes-comfyui /app/custom_nodes/efficiency-nodes-comfyui
+  && git clone https://github.com/jags111/efficiency-nodes-comfyui /app/custom_nodes/efficiency-nodes-comfyui \
+ && find /app -name .git -type d | xargs -r0 rm -rf
 
-RUN --mount=target=/cache/pip,type=cache \
-  pip install -r /app/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyMath/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyUI-Crystools/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyUI-Helper-Nodes/requirements.txt \
-  && pip install -r /app/custom_nodes/comfyui_controlnet_aux/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyUI-SUPIR/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyUI-KJNodes/requirements.txt \
-  && pip install -r /app/custom_nodes/ComfyUI-Impact-Pack/requirements.txt \
-  && pip install -r /app/custom_nodes/efficiency-nodes-comfyui/requirements.txt
+#COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
+COPY --chmod=755 . /
+#COPY --chmod=755 nginx_*.sh /usr/local/bin/
 
-#RUN git clone https://github.com/yuvraj108c/ComfyUI-Upscaler-Tensorrt /app/custom_nodes/ComfyUI-Upscaler-Tensorrt \
-#  && cd /app/custom_nodes/ComfyUI-Upscaler-Tensorrt \
-#  && pip install -r requirements.txt
-
-COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
-COPY --chmod=755  comfyui.sh .
-COPY --chmod=755 nginx_*.sh /usr/local/bin/
-
-#VOLUME /app/custom_nodes
 VOLUME /app/models
-#VOLUME /opt/conda/lib/python3.10/site-packages
 
 # default start command
 SHELL ["/bin/bash", "-eux", "-o", "pipefail", "-c"]
-#CMD python -u main.py --listen 0.0.0.0
-CMD /app/comfyui.sh
-
+CMD /comfyui.sh
