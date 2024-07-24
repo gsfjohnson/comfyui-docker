@@ -9,10 +9,10 @@ FROM python:3.11-slim
 #    apt update && \
 #    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0
 
-ENV XDG_CACHE_HOME=/cache
-ENV PIP_CACHE_DIR=/cache/pip
-ENV HF_HOME=/cache/huggingface
-ENV TRANSFORMERS_CACHE=/cache/huggingface/hub
+#ENV XDG_CACHE_HOME=/cache
+#ENV PIP_CACHE_DIR=/cache/pip
+#ENV HF_HOME=/cache/huggingface
+#ENV TRANSFORMERS_CACHE=/cache/huggingface/hub
 ENV COMFYUI_PATH=/app
 ENV COMFYUI_MODEL_PATH=/app/models
 
@@ -21,17 +21,23 @@ ENV COMFYUI_MODEL_PATH=/app/models
 #RUN --mount=type=cache,target=/cache/,uid=${USER_UID},gid=${USER_GID} \
 #RUN	mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE}
 
-WORKDIR /app
-
-# Install needed packages
 RUN --mount=target=/var/lib/apt/lists,type=cache \
  --mount=target=/var/cache/apt,type=cache \
  apt update \
  && DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 \
   nginx apache2-utils \
- && rm /etc/nginx/sites-enabled/default \
- && git clone https://github.com/comfyanonymous/ComfyUI.git /app \
+ && rm /etc/nginx/sites-enabled/default
+
+RUN install -v -m 0777 -o nobody -g nogroup -d /app \
+ && usermod --home /app nobody
+
+COPY nobody /etc/sudoers.d/nobody
+
+USER nobody:nogroup
+
+# Install needed packages
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app \
   && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
   && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
   && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
@@ -48,6 +54,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache \
   && git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack /app/custom_nodes/ComfyUI-Impact-Pack \
   && git clone https://github.com/jags111/efficiency-nodes-comfyui /app/custom_nodes/efficiency-nodes-comfyui \
  && find /app -name .git -type d | xargs -r0 rm -rf
+
+WORKDIR /app
 
 #COPY nginx_reverse_proxy_comfyui.conf /etc/nginx/sites-enabled/
 COPY --chmod=755 . /
