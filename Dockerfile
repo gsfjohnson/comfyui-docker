@@ -21,18 +21,22 @@ ENV COMFYUI_MODEL_PATH=/app/models
 #RUN --mount=type=cache,target=/cache/,uid=${USER_UID},gid=${USER_GID} \
 #RUN	mkdir -p ${PIP_CACHE_DIR} ${HF_HOME} ${TRANSFORMERS_CACHE}
 
+# Install needed packages
+# Remove nginx default site (create nginx site config via CMD script)
 RUN --mount=target=/var/lib/apt/lists,type=cache \
  --mount=target=/var/cache/apt,type=cache \
  apt update \
  && DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 \
-  nginx apache2-utils \
+  nginx apache2-utils sudo \
  && rm /etc/nginx/sites-enabled/default
 
+# Make /app the homedir for nobody user
 RUN install -v -m 0777 -o nobody -g nogroup -d /app \
  && usermod --home /app nobody
 
-COPY nobody /etc/sudoers.d/nobody
+# Enable nobody access to sudo without password
+COPY nobody.sudoer /etc/sudoers.d/nobody
 
 USER nobody:nogroup
 
