@@ -28,7 +28,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache \
  apt update \
  && DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   git git-lfs rsync fonts-recommended libgl1 libgl1-mesa-glx libglib2.0-0 \
-  nginx apache2-utils sudo \
+  nginx apache2-utils build-essential sudo \
  && rm /etc/nginx/sites-enabled/default
 
 # Make /app the homedir for nobody user
