@@ -42,8 +42,8 @@ COPY nobody.sudoer /etc/sudoers.d/nobody
 USER nobody:nogroup
 
 # Install needed packages
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app/comfy \
-  && mv /app/comfy/* /app/ && rm -rf /app/comfy \
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git /tmp/comfy \
+  && mv /tmp/comfy/* /app/ && rm -rf /tmp/comfy \
   && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
   && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
   && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
