@@ -33,7 +33,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache \
 
 # Make /app the homedir for nobody user
 RUN install -v -m 0777 -o nobody -g nogroup -d /app \
- && usermod --home /app nobody
+ && usermod --home /app nobody \
+ && mkdir -p /app/.cache/pip
 
 # Enable nobody access to sudo without password
 COPY nobody.sudoer /etc/sudoers.d/nobody
@@ -65,6 +66,7 @@ WORKDIR /app
 COPY --chmod=755 . /
 #COPY --chmod=755 nginx_*.sh /usr/local/bin/
 
+#VOLUME /app/.cache/pip
 VOLUME /app/models
 
 # default start command
