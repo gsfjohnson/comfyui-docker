@@ -2,7 +2,7 @@
 
 # install nginx
 if [ -z $(which nginx) ]; then
-  apt update
-  apt install -y nginx
+  sudo apt update
+  sudo apt install -y nginx
 fi
 

@@ -44,22 +44,25 @@ USER nobody:nogroup
 # Install needed packages
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /tmp/comfy \
   && mv /tmp/comfy/* /app/ && rm -rf /tmp/comfy \
-  && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
-  && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
-  && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
-  && git clone --recursive https://github.com/ssitu/ComfyUI_UltimateSDUpscale /app/custom_nodes/ComfyUI_UltimateSDUpscale \
-  && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git /app/custom_nodes/ComfyUI_Comfyroll_CustomNodes \
-  && git clone https://github.com/Jordach/comfy-plasma.git /app/custom_nodes/comfy-plasma \
-  && git clone https://github.com/JPS-GER/ComfyUI_JPS-Nodes.git /app/custom_nodes/ComfyUI_JPS-Nodes \
-  && git clone https://github.com/evanspearman/ComfyMath /app/custom_nodes/ComfyMath \
-  && git clone https://github.com/crystian/ComfyUI-Crystools /app/custom_nodes/ComfyUI-Crystools \
-  && git clone https://github.com/teward/ComfyUI-Helper-Nodes.git /app/custom_nodes/ComfyUI-Helper-Nodes \
-  && git clone https://github.com/Fannovel16/comfyui_controlnet_aux /app/custom_nodes/comfyui_controlnet_aux \
-  && git clone https://github.com/kijai/ComfyUI-SUPIR.git /app/custom_nodes/ComfyUI-SUPIR \
-  && git clone https://github.com/kijai/ComfyUI-KJNodes.git /app/custom_nodes/ComfyUI-KJNodes \
-  && git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack /app/custom_nodes/ComfyUI-Impact-Pack \
-  && git clone https://github.com/jags111/efficiency-nodes-comfyui /app/custom_nodes/efficiency-nodes-comfyui \
- && find /app -name .git -type d | xargs -r0 rm -rf
+  && cd /app/custom_nodes \
+  && git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
+  && git clone https://github.com/marhensa/sdxl-recommended-res-calc \
+  && git clone https://github.com/rgthree/rgthree-comfy.git \
+  && git clone --recursive https://github.com/ssitu/ComfyUI_UltimateSDUpscale \
+  && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
+  && git clone https://github.com/Jordach/comfy-plasma.git \
+  && git clone https://github.com/JPS-GER/ComfyUI_JPS-Nodes.git \
+  && git clone https://github.com/evanspearman/ComfyMath \
+  && git clone https://github.com/crystian/ComfyUI-Crystools \
+  && git clone https://github.com/teward/ComfyUI-Helper-Nodes.git \
+  && git clone https://github.com/Fannovel16/comfyui_controlnet_aux \
+  && git clone https://github.com/kijai/ComfyUI-SUPIR.git \
+  && git clone https://github.com/kijai/ComfyUI-KJNodes.git \
+  && git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack \
+  && git clone https://github.com/jags111/efficiency-nodes-comfyui \
+  && git clone https://github.com/sipherxyz/comfyui-art-venture \
+  && git clone https://github.com/cubiq/ComfyUI_InstantID \
+# && find /app -name .git -type d | xargs -r0 rm -rf
 
 WORKDIR /app
 

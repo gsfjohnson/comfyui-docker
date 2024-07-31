@@ -5,7 +5,7 @@
 [ -z $(which nginx) ] && /nginx_install.sh
 [ ! -r /etc/ssl/certs/localhost.pem ] && /nginx_setup.sh
 [ ! -r /app/models/.htpasswd ] && htpasswd -c -b /app/models/.htpasswd comfyui comfyui
-nginx
+sudo nginx
 
 # test for A100
 SMI=$(nvidia-smi | grep A100)

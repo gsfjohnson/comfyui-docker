@@ -11,7 +11,7 @@ KEY_FN=/etc/ssl/private/localhost.key
 
 # create certificates
 if [ ! -r $CERT_FN ]; then
-  openssl req -nodes -new -x509 -keyout $KEY_FN -out $CERT_FN -subj "/CN=localhost"
+  sudo openssl req -nodes -new -x509 -keyout $KEY_FN -out $CERT_FN -subj "/CN=localhost"
 fi
 
 
