@@ -43,7 +43,7 @@ USER nobody:nogroup
 
 # Install needed packages
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /app/comfy \
-  && mv /app/comfy/. /app && rmdir /app/comfy \
+  && mv /app/comfy/* /app/ && rm -rf /app/comfy \
   && git clone https://github.com/ltdrdata/ComfyUI-Manager.git /app/custom_nodes/ComfyUI-Manager \
   && git clone https://github.com/marhensa/sdxl-recommended-res-calc /app/custom_nodes/sdxl-recommended-res-calc \
   && git clone https://github.com/rgthree/rgthree-comfy.git /app/custom_nodes/rgthree-comfy \
